@@ -1,0 +1,148 @@
+/* Make a wish: birthday cake */
+
+.bday { max-width: 880px; margin: 0 auto; padding: 32px 16px 40px; }
+
+.back { display: inline-block; margin-bottom: 14px; color: var(--plum-soft); font-weight: 500; text-decoration: none; }
+.back:hover { color: var(--rose); }
+[hidden] { display: none !important; }
+
+.bday__head { text-align: center; }
+.bday__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 3.6rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1;
+  color: var(--rose);
+  text-shadow: 0 2px 0 var(--white);
+}
+.bday__sub { margin: 10px 0 0; color: var(--plum-soft); }
+
+/* ---------- stage ---------- */
+
+.stage {
+  --breath: 0;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 18px;
+  height: clamp(380px, 62vh, 500px);
+  margin-top: 24px;
+  padding: 24px 24px 18px;
+  overflow: hidden;
+  color: var(--white);
+  border: 3px solid var(--white);
+  border-radius: 32px;
+  background: linear-gradient(180deg, #fff0f6, #ffc3d9); /* the lit room */
+  box-shadow: var(--shadow);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.stage.is-lit { color: var(--plum); }
+
+/* the dim room sits on top and fades away once the candles are out */
+.stage__bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 80%, #8a3a70 0%, #4a1d48 55%, #2a1030 100%);
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+.stage.is-dusk .stage__bg { opacity: 1; }
+.stage.is-blowing .stage__bg { opacity: 0.75; }
+
+.slot { position: relative; z-index: 1; flex: none; height: 88%; aspect-ratio: 140 / 362; }
+
+/* the two of them live in this layer (actors come from scene.js, styled in characters.css) */
+.cast { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+.cast .actor { cursor: default; }
+.cast .actor--her { cursor: pointer; }
+/* she puffs up a little as she breathes in */
+.cast .actor--her .actor__gait { transform: scale(calc(1 + var(--breath) * 0.07), calc(1 + var(--breath) * 0.04)); }
+
+.cake { position: relative; z-index: 1; width: min(58%, 420px); flex: none; cursor: pointer; }
+.cake svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* ---------- flames ---------- */
+
+.flame__body {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  /* flames lean towards her as she inhales */
+  --lean: calc(var(--breath) * -16deg);
+  animation: flicker 0.9s ease-in-out var(--d, 0s) infinite;
+}
+.flame__glow { animation: glow 1.3s ease-in-out var(--d, 0s) infinite; }
+@keyframes flicker {
+  0%, 100% { transform: rotate(var(--lean)) scale(1, 1); }
+  30% { transform: rotate(calc(var(--lean) + 3deg)) scale(0.94, 1.07); }
+  65% { transform: rotate(calc(var(--lean) - 3deg)) scale(1.05, 0.94); }
+}
+@keyframes glow { 50% { opacity: 0.7; } }
+
+.stage.is-blowing .flame:not(.is-out) .flame__body { --lean: 34deg; animation-duration: 0.18s; }
+
+.flame.is-out .flame__body { animation: snuff 0.45s ease-in forwards; }
+.flame.is-out .flame__glow { animation: none; opacity: 0; transition: opacity 0.3s; }
+@keyframes snuff { to { transform: translate(18px, -4px) rotate(60deg) scale(0.15, 0.05); opacity: 0; } }
+
+.smoke { fill: #d8ccd4; opacity: 0; animation: smoke 1.6s ease-out forwards; }
+@keyframes smoke {
+  0% { opacity: 0.85; transform: translate(0, 0) scale(0.6); }
+  100% { opacity: 0; transform: translate(14px, -54px) scale(2.6); }
+}
+
+/* ---------- wind ---------- */
+
+.wind { position: absolute; z-index: 1; left: 34%; top: 38%; width: 26%; height: 90px; pointer-events: none; opacity: 0; }
+.wind i { position: absolute; left: 0; height: 4px; width: 70%; border-radius: 4px; background: rgba(255, 255, 255, 0.85); }
+.wind i:nth-child(1) { top: 6px; }
+.wind i:nth-child(2) { top: 28px; width: 90%; }
+.wind i:nth-child(3) { top: 50px; width: 60%; }
+.wind i:nth-child(4) { top: 72px; width: 80%; }
+.stage.is-blowing .wind { opacity: 1; }
+.stage.is-blowing .wind i { animation: whoosh 0.5s ease-out infinite; }
+.stage.is-blowing .wind i:nth-child(2) { animation-delay: 0.08s; }
+.stage.is-blowing .wind i:nth-child(3) { animation-delay: 0.16s; }
+.stage.is-blowing .wind i:nth-child(4) { animation-delay: 0.24s; }
+@keyframes whoosh { from { transform: translateX(-30%); opacity: 0; } 40% { opacity: 1; } to { transform: translateX(160%); opacity: 0; } }
+
+/* ---------- message ---------- */
+
+.cheer {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  top: 18px;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  text-align: center;
+  animation: pop-in 0.6s var(--bounce) both;
+}
+.cheer__title { margin: 0; font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: clamp(2rem, 6vw, 3.2rem); line-height: 1; color: var(--rose); text-shadow: 0 2px 0 var(--white); }
+.cheer__line { margin: 0; color: var(--plum); font-weight: 500; }
+.cheer .btn { margin-top: 4px; padding: 9px 22px; font-size: 0.95rem; }
+
+/* ---------- breath bar ---------- */
+
+.breath { display: grid; justify-items: center; gap: 12px; margin-top: 22px; }
+.bar { width: min(100%, 460px); height: 18px; overflow: hidden; background: var(--white); border: 3px solid var(--white); border-radius: 999px; box-shadow: inset 0 1px 4px rgba(107, 42, 74, 0.25), var(--shadow); }
+.bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #8fd3ff, var(--pink-300), var(--rose)); border-radius: 999px; }
+.hint { margin: 0; min-height: 1.6em; font-weight: 500; color: var(--plum-soft); }
+kbd { padding: 1px 10px; font: inherit; font-weight: 700; color: var(--plum); background: var(--white); border: 2px solid var(--pink-200); border-bottom-width: 4px; border-radius: 8px; }
+.hold { user-select: none; -webkit-user-select: none; touch-action: none; }
+
+@media (max-width: 640px) {
+  .bday { padding: 20px 10px 32px; }
+  .bday__title { font-size: 2.8rem; }
+  .stage { gap: 4px; padding: 16px 8px 12px; height: 380px; }
+  .cake { width: 66%; }
+  .slot { height: 70%; }
+  .wind { display: none; }
+}

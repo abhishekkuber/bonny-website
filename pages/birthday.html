@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>make a wish 🎂</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+  <script src="../assets/js/tax.js"></script>
+  <script>KissTax.require();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/characters.css">
+  <link rel="stylesheet" href="../assets/css/birthday.css">
+  <script type="module" src="../assets/js/birthday.js"></script>
+</head>
+<body>
+  <main class="bday">
+    <header class="bday__head">
+      <a class="back" href="../hub.html">← home</a>
+      <h1 class="bday__title">make a wish</h1>
+      <p id="sub" class="bday__sub">close your eyes, think of a wish, then blow out the candles.</p>
+    </header>
+
+    <section id="stage" class="stage is-dusk" aria-label="birthday cake">
+      <div class="stage__bg" aria-hidden="true"></div>
+      <div id="cast" class="cast" aria-hidden="true"></div>
+      <div id="wind" class="wind" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div id="slot" class="slot" aria-hidden="true"></div>
+      <div id="cake" class="cake"></div>
+
+      <div id="cheer" class="cheer" hidden>
+        <p id="cheer-title" class="cheer__title"></p>
+        <p class="cheer__line">i hope every wish comes true 💖</p>
+        <button id="again" class="btn" type="button">light them again 🕯️</button>
+      </div>
+    </section>
+
+    <div class="breath">
+      <div class="bar" role="progressbar" aria-label="breath" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="fill"></i></div>
+      <p id="hint" class="hint">hold <kbd>space</kbd> to take a deep breath</p>
+      <button id="hold" class="btn hold" type="button">hold to blow 🌬️</button>
+    </div>
+  </main>
+</body>
+</html>

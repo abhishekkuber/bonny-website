@@ -23,7 +23,7 @@ const KISS_GAP = 72;  // her.x - him.x when she kisses his cheek (him leaning 8d
 const KISS_HOP = 76;  // how high she hops to reach his cheek
 const HUG_GAP = 100;  // distance between them in a hug
 
-class Actor {
+export class Actor {
   constructor(who, stage, height) {
     this.who = who;
     this.s = height / VIEWBOX.h;

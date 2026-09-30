@@ -139,7 +139,7 @@
   color: var(--rose);
   text-shadow: 0 2px 0 var(--white);
 }
-.grid--games { grid-template-columns: repeat(3, 1fr); max-width: 810px; margin: 24px auto 0; }
-@media (max-width: 900px) { .grid--games { grid-template-columns: repeat(3, 1fr); } }
+.grid--games { grid-template-columns: repeat(4, 1fr); margin: 24px auto 0; }
+@media (max-width: 900px) { .grid--games { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 620px) { .grid--games { grid-template-columns: 1fr; } }
 .tile__badge:not(:empty) { white-space: nowrap; }

@@ -64,7 +64,7 @@ function showDay(key) {
   openDay = key;
   const people = rows.filter((r) => r.day === key)
     .sort((a, b) => (a.author_id === me.id ? -1 : 0) - (b.author_id === me.id ? -1 : 0));
-  $('detail').innerHTML = `<h3 class="detail__date">${key}</h3><div class="detail__people">${people.map((r) => {
+  $('detail').innerHTML = `<h3 class="detail__date">${Number(key.slice(8))} ${MONTHS[Number(key.slice(5, 7)) - 1]}</h3><div class="detail__people">${people.map((r) => {
     const list = r.feelings
       ? Object.entries(FEELINGS).filter(([k]) => r.feelings[k]).sort((a, b) => r.feelings[b[0]] - r.feelings[a[0]])
         .map(([k, f]) => `<li><span class="dot" style="background:${f.color}"></span>${f.label}<b>${r.feelings[k]}%</b></li>`).join('')
