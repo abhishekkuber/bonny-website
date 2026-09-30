@@ -517,15 +517,20 @@ const APOD_CACHE = 'bonny.apod.v1';
 
 async function loadApod() {
   const key = CONFIG.nasa.apiKey || 'DEMO_KEY';
+  let cached = null;
+  try { cached = JSON.parse(localStorage.getItem(APOD_CACHE)); } catch {}
+  if (cached && Date.now() - cached.t < 3 * HOUR) return cached.data;
   try {
-    const cached = JSON.parse(localStorage.getItem(APOD_CACHE));
-    if (cached && Date.now() - cached.t < 3 * HOUR) return cached.data;
-  } catch {}
-  const res = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${encodeURIComponent(key)}&thumbs=true`);
-  if (!res.ok) throw new Error(`apod ${res.status}`);
-  const data = await res.json();
-  try { localStorage.setItem(APOD_CACHE, JSON.stringify({ t: Date.now(), data })); } catch {}
-  return data;
+    const res = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${encodeURIComponent(key)}&thumbs=true`);
+    if (!res.ok) throw new Error(`apod ${res.status}`);
+    const data = await res.json();
+    try { localStorage.setItem(APOD_CACHE, JSON.stringify({ t: Date.now(), data })); } catch {}
+    return data;
+  } catch (err) {
+    // NASA's service is down or busy: show the last picture we managed to load, however old
+    if (cached?.data) return { ...cached.data, stale: true };
+    throw err;
+  }
 }
 
 async function renderApod() {
@@ -555,10 +560,14 @@ async function renderApod() {
       more.textContent = p.classList.contains('open') ? 'less' : 'read more';
     });
     text.append(p, more);
+    if (a.stale) text.append(el('p', 'muted small', "NASA's picture service is not answering, so this is the last one we saw"));
     if (!CONFIG.nasa.apiKey) text.append(el('p', 'muted small', "using NASA's shared demo key; add your own in config.js"));
     body.append(media, text);
   } catch {
-    body.replaceChildren(el('p', 'muted', "couldn't reach NASA right now 🛰️ (with the demo key this happens when it's busy)"));
+    const retry = el('button', 'apod__more', 'try again');
+    retry.type = 'button';
+    retry.addEventListener('click', () => { body.replaceChildren(el('p', 'muted', 'asking NASA…')); renderApod(); });
+    body.replaceChildren(el('p', 'muted', "NASA's picture-of-the-day service isn't answering right now 🛰️ it's their side, not yours, and usually comes back on its own. "), retry);
   }
 }
 

@@ -143,6 +143,6 @@ kbd { padding: 1px 10px; font: inherit; font-weight: 700; color: var(--plum); ba
   .bday__title { font-size: 2.8rem; }
   .stage { gap: 4px; padding: 16px 8px 12px; height: 380px; }
   .cake { width: 66%; }
-  .slot { height: 70%; }
+  .slot { height: 70%; margin-left: 14%; } /* room for him to stand on her left */
   .wind { display: none; }
 }

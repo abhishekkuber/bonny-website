@@ -95,26 +95,45 @@ wind.style.top = `${stage.clientHeight - 10 - slot.clientHeight * 0.78}px`;
 const face = (eyes, mouth) => her.expr({ eyes, mouth });
 face('normal', 'smile');
 
-let peeked = false;
-let peeking = Promise.resolve(); // settles once he is in place at the edge
+// Where he should be: peeking at the edge while she breathes in, hidden otherwise.
+let wantPeek = false;
+let here = false;     // is he currently at the edge?
+let settling = null;  // the walk in progress, so two walks never run at once
 
-/** The first time she breathes in, he sneaks into view at the edge and watches. */
-function peek() {
-  if (peeked) return;
-  peeked = true;
-  him.expr({ eyes: 'normal', mouth: 'grin', blush: 0.7 });
-  peeking = him.moveTo(-him.w * 0.45, { speed: 90, look: 5 }).then(() => him.emote('🤫'));
+/** Walk him in or out until he is where he should be. */
+async function walkToWhereHeShouldBe() {
+  while (wantPeek !== here) {
+    if (wantPeek) {
+      him.expr({ eyes: 'normal', mouth: 'grin', blush: 0.7 });
+      await him.moveTo(-him.w * 0.45, { speed: 90, look: 5 });
+      here = true;
+      him.emote('🤫');
+    } else {
+      him.emote('🤭');
+      await him.moveTo(-him.w - 30, { speed: 90, look: -5 });
+      here = false;
+    }
+  }
+}
+
+/** Start that walk unless he is already there or already walking. */
+function settle() {
+  if (settling) return settling;
+  if (wantPeek === here) return Promise.resolve();
+  settling = walkToWhereHeShouldBe().finally(() => { settling = null; });
+  return settling;
 }
 
 /** She blew. He runs in and kisses her on the cheek. */
 async function kissHer() {
-  await peeking; // never run two movements at once
+  wantPeek = true;
+  await settle(); // he must be at the edge before he can run in
   him.pose('arms-up');
   him.expr({ eyes: 'happy', mouth: 'grin' });
   await wait(250);
   him.pose('arms-up', false);
   // stand as far left of her as the room allows (he is taller, so he bends over to her)
-  const gap = Math.max(100 * S, Math.min(150 * S, her.x - 8));
+  const gap = Math.max(60 * S, Math.min(150 * S, her.x)); // never further left than the stage edge
   const bend = Math.max(4, Math.min(18, (Math.asin((gap / S - 72) / 284) * 180) / Math.PI));
   await him.moveTo(her.x - gap, { speed: 260, gait: 'run', look: 5 });
 
@@ -153,7 +172,7 @@ let last = 0;
 function setHolding(on) {
   if (on && state !== 'ready') return;
   holding = on;
-  if (on) peek();
+  if (on) { wantPeek = true; settle(); }
 }
 
 function paint() {
@@ -172,6 +191,7 @@ function frame(now) {
     p = Math.max(0, Math.min(1, p + (holding ? dt / INHALE_S : -dt / EXHALE_S)));
     paint();
     if (p >= 1) blow();
+    else if (p === 0 && !holding && wantPeek) { wantPeek = false; settle(); } // she gave up: he sneaks back out
   }
   requestAnimationFrame(frame);
 }
@@ -226,7 +246,8 @@ function finish() {
 function relight() {
   state = 'ready';
   p = 0;
-  peeked = false;
+  wantPeek = false;
+  here = false;
   flames.forEach((f) => f.classList.remove('is-out'));
   stage.classList.remove('is-lit', 'is-blowing');
   stage.classList.add('is-dusk');
