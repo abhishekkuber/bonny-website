@@ -1,0 +1,180 @@
+/* ==========================================================
+   Shared theme — every page links this first.
+   Colours, fonts, buttons, cards, toasts and shared FX.
+   ========================================================== */
+
+:root {
+  --pink-50: #fff5f9;
+  --pink-100: #ffe4ef;
+  --pink-200: #ffc9de;
+  --pink-300: #ffa3c4;
+  --pink-400: #ff7aa8;
+  --rose: #f2508a;
+  --rose-dark: #c93a6e;
+  --red: #e11d48;
+  --plum: #6b2a4a;
+  --plum-soft: #9a5a7a;
+  --white: #ffffff;
+
+  --font-body: 'Instrument Sans', system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+
+  --radius: 28px;
+  --shadow: 0 12px 32px rgba(226, 80, 138, 0.18);
+  --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--plum);
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.9) 0, transparent 40%),
+    radial-gradient(circle at 85% 85%, var(--pink-200) 0, transparent 45%),
+    linear-gradient(160deg, var(--pink-50), var(--pink-100));
+  background-attachment: fixed;
+  overflow-x: hidden;
+  animation: page-in 0.6s ease both;
+}
+
+main { position: relative; z-index: 1; }
+
+body.leaving { animation: page-out 0.5s ease forwards; }
+
+@keyframes page-in { from { opacity: 0; } }
+@keyframes page-out { to { opacity: 0; transform: scale(1.03); } }
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--rose);
+  border: 3px solid var(--white);
+  border-radius: 999px;
+  padding: 14px 30px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 6px 0 var(--rose-dark), var(--shadow);
+  transition: transform 0.15s var(--bounce), box-shadow 0.15s ease;
+}
+.btn:hover { transform: translateY(-3px) rotate(-1deg); }
+.btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--rose-dark), var(--shadow); }
+
+.btn--ghost {
+  color: var(--rose);
+  background: var(--white);
+  border-color: var(--pink-200);
+  box-shadow: 0 5px 0 var(--pink-300), var(--shadow);
+}
+
+/* ---------- cards ---------- */
+
+.card {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(8px);
+  border: 3px solid var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- toast ---------- */
+
+.toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: 1000;
+  padding: 12px 26px;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--plum);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  transform: translate(-50%, -160%);
+  transition: transform 0.4s var(--bounce);
+  pointer-events: none;
+}
+.toast.show { transform: translate(-50%, 0); }
+
+/* ---------- shared FX (see assets/js/fx.js) ---------- */
+
+.fx-heart,
+.fx-rain {
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+
+.fx-heart {
+  transform: translate(-50%, -50%);
+  animation: fx-burst var(--dur, 1s) cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+@keyframes fx-burst {
+  0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; }
+  70% { opacity: 1; }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)) scale(var(--s));
+    opacity: 0;
+  }
+}
+
+.fx-rain {
+  top: -50px;
+  animation: fx-fall var(--dur, 3s) linear forwards;
+}
+@keyframes fx-fall {
+  to { transform: translateY(calc(100vh + 100px)) rotate(var(--rot)); }
+}
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.ambient span {
+  position: absolute;
+  bottom: -60px;
+  left: var(--x);
+  font-size: var(--size);
+  opacity: 0.35;
+  animation: drift var(--dur) linear var(--delay) infinite;
+}
+@keyframes drift {
+  0% { transform: translate(0, 0) rotate(0); }
+  50% { transform: translate(var(--sway), -55vh) rotate(calc(var(--rot) / 2)); }
+  100% { transform: translate(0, -115vh) rotate(var(--rot)); }
+}
+
+.shake { animation: shake 0.45s ease; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-12px) rotate(-1deg); }
+  40% { transform: translateX(10px) rotate(1deg); }
+  60% { transform: translateX(-7px); }
+  80% { transform: translateX(5px); }
+}
+
+@keyframes pop-in {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient { display: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

@@ -1,0 +1,92 @@
+/* Mood history calendar */
+
+.hist { max-width: 1000px; margin: 0 auto; padding: 40px 32px 56px; }
+
+.back { display: inline-block; margin-bottom: 16px; color: var(--plum-soft); font-weight: 500; text-decoration: none; }
+.back:hover { color: var(--rose); }
+[hidden] { display: none !important; }
+
+.hist__head { text-align: center; }
+.hist__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1;
+  color: var(--rose);
+  text-shadow: 0 2px 0 var(--white);
+}
+.legend { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 18px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 0.9rem; font-weight: 600; }
+.legend li { display: inline-flex; align-items: center; gap: 6px; }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; }
+
+.months { display: flex; align-items: center; justify-content: center; gap: 24px; margin: 28px 0 16px; }
+.months__name { margin: 0; min-width: 9ch; text-align: center; font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 2.2rem; color: var(--plum); }
+.arrow {
+  width: 42px; height: 42px; font-size: 1.6rem; line-height: 1; color: var(--rose);
+  background: var(--white); border: 2px solid var(--pink-200); border-radius: 50%; cursor: pointer;
+}
+.arrow:hover:not(:disabled) { border-color: var(--rose); }
+.arrow:disabled { opacity: 0.35; cursor: default; }
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+}
+.dow { text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--plum-soft); }
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 108px;
+  padding: 6px 4px 8px;
+  font: inherit;
+  color: var(--plum);
+  background: var(--white);
+  border: 2px solid var(--pink-100);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.15s var(--bounce), border-color 0.15s ease;
+}
+.cell:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--rose); }
+.cell.is-empty { background: rgba(255, 255, 255, 0.5); border-style: dashed; cursor: default; }
+.cell.is-today { border-color: var(--rose); }
+.cell__num { font-size: 0.85rem; font-weight: 600; color: var(--plum-soft); align-self: flex-start; padding-left: 6px; }
+.cell__flowers { display: flex; justify-content: center; gap: 2px; width: 100%; }
+.cell__flower { flex: 0 1 50%; min-width: 0; }
+.flower { display: block; width: 100%; height: auto; overflow: visible; }
+
+.detail { margin-top: 20px; padding: 22px 26px; background: rgba(255, 255, 255, 0.92); }
+.detail__date { margin: 0 0 14px; font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.8rem; }
+.detail__people { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.person { display: grid; grid-template-columns: 130px 1fr; gap: 16px; align-items: start; }
+.person h4 { margin: 0 0 6px; font-size: 1.1rem; }
+.pcts { margin: 0; padding: 0; list-style: none; }
+.pcts li { display: flex; align-items: center; gap: 8px; padding: 2px 0; }
+.pcts b { margin-left: auto; font-variant-numeric: tabular-nums; }
+.pcts .none { color: var(--plum-soft); }
+.words {
+  margin: 10px 0 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.status { margin: 16px 0 0; text-align: center; color: var(--rose-dark); }
+
+@media (max-width: 720px) {
+  .hist { padding: 24px 12px 40px; }
+  .hist__title { font-size: 2.6rem; }
+  .calendar { gap: 4px; padding: 10px; }
+  .cell { min-height: 74px; padding: 4px 2px; border-radius: 10px; }
+  .cell__num { font-size: 0.7rem; padding-left: 2px; }
+  .person { grid-template-columns: 90px 1fr; }
+}

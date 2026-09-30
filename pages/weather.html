@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>our weather ⛅</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛅</text></svg>">
+  <script src="../assets/js/tax.js"></script>
+  <script>KissTax.require();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/characters.css">
+  <link rel="stylesheet" href="../assets/css/weather.css">
+  <script type="module" src="../assets/js/weather.js"></script>
+</head>
+<body class="wx-page" data-mood="loading">
+  <!-- page-only sky: gradients per mood + weather particles (filled by weather.js) -->
+  <div class="sky" aria-hidden="true">
+    <div class="sky__grad g-loading"></div>
+    <div class="sky__grad g-sunny"></div>
+    <div class="sky__grad g-hot"></div>
+    <div class="sky__grad g-cloudy"></div>
+    <div class="sky__grad g-rain"></div>
+    <div class="sky__grad g-storm"></div>
+    <div class="sky__grad g-cold"></div>
+    <div class="sky__grad g-night"></div>
+    <div class="sun"></div>
+    <div class="moon"></div>
+    <div id="stars" class="fx stars"></div>
+    <div id="clouds" class="fx clouds"></div>
+    <div id="rain" class="fx rain"></div>
+    <div id="snow" class="fx snow"></div>
+    <div class="fog"></div>
+    <div class="flash"></div>
+  </div>
+
+  <main class="wx">
+    <section class="wx__side">
+      <a class="back" href="../hub.html">← home</a>
+      <h1 class="wx__title">our weather</h1>
+
+      <div class="toggle" role="tablist" aria-label="whose home">
+        <span class="toggle__pill" aria-hidden="true"></span>
+        <button type="button" role="tab" data-home="her"><b>bonny's home</b><small>London</small></button>
+        <button type="button" role="tab" data-home="him"><b>kubie's home</b><small>Pune</small></button>
+      </div>
+
+      <div class="wx__card card">
+        <div class="wx__top">
+          <div>
+            <div id="city" class="wx__city">…</div>
+            <div id="time" class="wx__time"></div>
+          </div>
+          <div id="temp" class="wx__temp">–°</div>
+        </div>
+        <div id="condition" class="wx__condition">checking the sky…</div>
+        <div id="line" class="wx__line"></div>
+        <dl class="wx__details">
+          <div><dt>feels like</dt><dd id="feels">–</dd></div>
+          <div><dt>high / low</dt><dd id="hilo">–</dd></div>
+          <div><dt>humidity</dt><dd id="humidity">–</dd></div>
+          <div><dt>wind</dt><dd id="wind">–</dd></div>
+        </dl>
+      </div>
+      <p id="other" class="wx__other"></p>
+    </section>
+
+    <section class="wx__stage">
+      <svg id="scene" class="scene" viewBox="0 -90 440 490" data-mood="loading" role="img" aria-label="the two of you, dressed for the weather">
+        <g class="umbrella">
+          <path class="umbrella__canopy" d="M40 10 Q200 -150 360 10 Q333 -4 306 10 Q280 -4 253 10 Q226 -4 200 10 Q173 -4 146 10 Q120 -4 93 10 Q66 -4 40 10 Z"/>
+          <path class="umbrella__ribs" d="M200 -70 L93 10 M200 -70 L146 10 M200 -70 L200 10 M200 -70 L253 10 M200 -70 L306 10"/>
+          <path class="umbrella__shaft" d="M200 -70 L200 175 q0 12 -8 12 q-7 0 -7 -7"/>
+          <circle class="umbrella__tip" cx="200" cy="-74" r="4"/>
+        </g>
+        <g id="who-him" class="who who-him"></g>
+        <g id="who-her" class="who who-her"></g>
+        <g class="breath">
+          <circle cx="146" cy="136" r="5"/><circle cx="154" cy="130" r="7"/>
+          <circle cx="298" cy="206" r="5"/><circle cx="306" cy="200" r="7"/>
+        </g>
+        <g class="zzz">
+          <text x="182" y="40">z</text><text x="196" y="22">z</text>
+          <text x="330" y="120">z</text><text x="344" y="102">z</text>
+        </g>
+      </svg>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mood history 🗓️</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗓️</text></svg>">
+  <script src="../assets/js/tax.js"></script>
+  <script>KissTax.require();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/mood-history.css">
+  <script type="module" src="../assets/js/mood-history.js"></script>
+</head>
+<body>
+  <main class="hist">
+    <header class="hist__head">
+      <a class="back" href="mood.html">← mood flower</a>
+      <h1 class="hist__title">mood history</h1>
+      <ul id="legend" class="legend" aria-label="feeling colours"></ul>
+    </header>
+
+    <nav class="months" aria-label="month">
+      <button id="prev" class="arrow" type="button" aria-label="previous month">‹</button>
+      <h2 id="month-name" class="months__name"></h2>
+      <button id="next" class="arrow" type="button" aria-label="next month">›</button>
+    </nav>
+
+    <section id="calendar" class="calendar card" aria-live="polite"></section>
+    <section id="detail" class="detail card" hidden></section>
+    <p id="status" class="status" role="status" hidden></p>
+  </main>
+</body>
+</html>

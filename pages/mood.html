@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mood flower 🌸</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+  <script src="../assets/js/tax.js"></script>
+  <script>KissTax.require();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/mood.css">
+  <script type="module" src="../assets/js/mood.js"></script>
+</head>
+<body>
+  <main class="mood">
+    <header class="mood__head">
+      <a class="back" href="../hub.html">← home</a>
+      <h1 class="mood__title">mood flower</h1>
+      <p class="mood__sub">write how you feel, then let jev read it. the flower is a pie chart of how much of each feeling is in your latest sentence.</p>
+    </header>
+
+    <section class="mine card">
+      <div class="mine__flower">
+        <div class="glow" aria-hidden="true"></div>
+        <div id="my-flower"></div>
+        <h2 class="name" id="my-name">you</h2>
+      </div>
+
+      <div class="mine__panel">
+        <textarea id="text" maxlength="1500" rows="5" placeholder="how are you feeling today? write a few sentences."></textarea>
+
+        <div class="readout">
+          <p id="readout-head" class="readout__head">Jev · waiting for a sentence</p>
+          <ul id="readout" class="readout__list"></ul>
+          <p id="readout-foot" class="readout__foot"></p>
+        </div>
+
+        <div class="actions">
+          <button id="read-btn" class="btn" type="button">read my feelings 🪡</button>
+          <button id="save" class="btn btn--ghost" type="button">save today</button>
+        </div>
+        <p id="status" class="status" role="status" hidden></p>
+      </div>
+    </section>
+
+    <section class="theirs card" id="theirs">
+      <div class="theirs__flower">
+        <div id="their-flower"></div>
+      </div>
+      <div class="theirs__info">
+        <h2 class="name" id="their-name">them</h2>
+        <p id="their-empty" class="their-empty" hidden>nothing stitched yet today.</p>
+        <button id="read" class="btn btn--ghost" type="button" hidden>read their words</button>
+        <p id="their-words" class="their-words" hidden></p>
+      </div>
+    </section>
+
+    <p class="history-link"><a class="btn btn--ghost" href="mood-history.html">mood history 🗓️</a></p>
+  </main>
+</body>
+</html>

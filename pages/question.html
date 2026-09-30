@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>daily question 💭</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💭</text></svg>">
+  <script src="../assets/js/tax.js"></script>
+  <script>KissTax.require();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/question.css">
+  <script type="module" src="../assets/js/question.js"></script>
+</head>
+<body>
+  <main class="qa">
+    <header class="qa__head">
+      <a class="back" href="../hub.html">← home</a>
+      <h1 class="qa__title">daily question</h1>
+      <p class="qa__sub">ask each other one question a day. answers show up right here.</p>
+    </header>
+
+    <section id="ask" class="ask card">
+      <h2 id="ask-title" class="ask__title">ask them something</h2>
+
+      <form id="ask-form" autocomplete="off">
+        <textarea id="ask-text" maxlength="300" rows="2" placeholder="what do you want to know?" required></textarea>
+        <div class="row">
+          <button id="idea" class="btn btn--ghost" type="button">need an idea? 💡</button>
+          <button id="ask-send" class="btn" type="submit">ask 💭</button>
+        </div>
+      </form>
+
+      <div id="ask-today" class="ask__today" hidden>
+        <p class="ask__label">you asked today</p>
+        <p id="ask-today-text" class="ask__today-text"></p>
+        <div class="row" id="ask-today-actions">
+          <button id="ask-edit" class="btn btn--ghost btn--small" type="button">reword</button>
+          <button id="ask-delete" class="btn btn--ghost btn--small" type="button">take it back</button>
+        </div>
+      </div>
+    </section>
+
+    <p id="status" class="status" role="status" hidden></p>
+
+    <section id="feed" class="feed" aria-live="polite"></section>
+  </main>
+</body>
+</html>

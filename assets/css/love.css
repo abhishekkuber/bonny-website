@@ -1,0 +1,162 @@
+/* Love letters */
+
+.love {
+  min-height: 100vh;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.back { display: inline-block; margin-bottom: 24px; color: var(--plum-soft); font-weight: 500; text-decoration: none; }
+.back:hover { color: var(--rose); }
+.love__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1;
+  color: var(--rose);
+  text-shadow: 0 2px 0 var(--white);
+}
+.love__sub { margin: 12px 0 28px; color: var(--plum-soft); }
+
+/* ---------- 3-way toggle ---------- */
+
+.toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 5px;
+  margin-bottom: 28px;
+  background: rgba(255, 255, 255, 0.65);
+  border: 2px solid var(--white);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+.toggle button {
+  position: relative;
+  z-index: 1;
+  padding: 9px 6px;
+  font: 500 0.95rem var(--font-body);
+  color: var(--plum-soft);
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.toggle button[aria-selected='true'] { color: var(--white); }
+.toggle__pill {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: calc((100% - 10px) / 3);
+  background: var(--rose);
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(242, 80, 138, 0.35);
+  transform: translateX(calc(var(--i, 0) * 100%));
+  transition: transform 0.45s var(--bounce);
+}
+
+.btn[disabled] { opacity: 0.7; cursor: progress; }
+.hint { margin: 14px 0 0; font-size: 0.85rem; color: var(--plum-soft); }
+
+/* ---------- the letter ---------- */
+
+.love__stage { display: grid; place-items: center; }
+
+.letter {
+  position: relative;
+  width: min(100%, 600px);
+  min-height: 380px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 56px 56px 44px;
+  color: #4b2a3a;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(201, 58, 110, 0.06) 31px 32px),
+    linear-gradient(160deg, #fffdf8, #fff4ea);
+  border-radius: 6px;
+  box-shadow: 0 22px 50px rgba(107, 42, 74, 0.2), 0 2px 6px rgba(107, 42, 74, 0.08);
+  transform: rotate(0.8deg);
+}
+.letter::before {
+  /* torn-envelope flap line along the top */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, var(--pink-200) 0 14px, transparent 14px 20px);
+  opacity: 0.7;
+}
+.letter.deliver { animation: deliver 0.7s var(--bounce); }
+@keyframes deliver {
+  0% { transform: translateY(40px) rotate(-3deg) scale(0.96); opacity: 0; }
+  100% { transform: rotate(0.8deg); opacity: 1; }
+}
+
+.letter__seal {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  font-size: 1.2rem;
+  color: #ffd9e4;
+  background: radial-gradient(circle at 35% 30%, #e0496f, #a51d45);
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(165, 29, 69, 0.45), inset 0 -3px 6px rgba(0, 0, 0, 0.2);
+  transform: rotate(-12deg);
+}
+.is-loading .letter__seal { animation: seal 0.9s ease-in-out infinite; }
+@keyframes seal { 50% { transform: rotate(8deg) scale(1.08); } }
+
+.letter__kind { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rose); }
+.letter__title {
+  margin: 8px 0 18px;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.1;
+}
+.letter__title:empty { display: none; }
+
+.letter__body { font-family: var(--font-display); font-size: 1.35rem; line-height: 1.5; }
+.letter__body .stanza { margin: 0 0 1em; }
+.letter__body .stanza:last-child { margin-bottom: 0; }
+.letter__body .line { display: block; }
+.letter__quote {
+  position: relative;
+  margin: 18px 0 0;
+  font-size: 1.9rem;
+  font-style: italic;
+  line-height: 1.35;
+}
+.letter__quote::before {
+  content: '“';
+  position: absolute;
+  top: -0.45em;
+  left: -0.45em;
+  font-size: 3.2em;
+  line-height: 1;
+  color: var(--pink-200);
+  z-index: -1;
+}
+
+.letter__by { margin-top: 26px; font-size: 0.95rem; color: var(--plum-soft); }
+.letter__by i { font-family: var(--font-display); font-size: 1.1rem; }
+
+@media (max-width: 900px) {
+  .love { grid-template-columns: 1fr; gap: 32px; }
+}

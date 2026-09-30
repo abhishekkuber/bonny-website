@@ -1,0 +1,125 @@
+/* Connect 4 */
+
+.c4 { max-width: 560px; margin: 0 auto; padding: 32px 16px 48px; }
+
+.back { display: inline-block; margin-bottom: 14px; color: var(--plum-soft); font-weight: 500; text-decoration: none; }
+.back:hover { color: var(--rose); }
+[hidden] { display: none !important; }
+.btn[disabled] { opacity: 0.6; cursor: default; transform: none; }
+
+.c4__head { text-align: center; }
+.c4__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1;
+  color: var(--rose);
+  text-shadow: 0 2px 0 var(--white);
+}
+.c4__score { margin: 10px 0 0; font-weight: 600; color: var(--plum-soft); font-variant-numeric: tabular-nums; }
+
+.game { margin-top: 22px; padding: 22px 20px 24px; display: grid; gap: 16px; justify-items: center; background: rgba(255, 255, 255, 0.9); }
+
+.players { display: flex; gap: 12px; }
+.player {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 16px 5px 8px;
+  font-weight: 600;
+  background: var(--white);
+  border: 2px solid var(--pink-100);
+  border-radius: 999px;
+  transition: border-color 0.2s ease, transform 0.2s var(--bounce);
+}
+.player.is-turn { border-color: var(--rose); transform: scale(1.06); }
+
+/* ---------- discs ---------- */
+
+.disc {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.18), inset 0 3px 5px rgba(255, 255, 255, 0.45);
+}
+.disc--r { background: radial-gradient(circle at 35% 30%, #ff9ab8, var(--rose) 55%, var(--rose-dark)); }
+.disc--y { background: radial-gradient(circle at 35% 30%, #d9e0ff, #7f93e6 55%, #5060b8); }
+.disc--chip { width: 26px; }
+
+/* ---------- board ---------- */
+
+.frame {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  width: min(100%, 480px);
+  margin-top: 40px; /* room for the hover preview */
+  padding: 10px;
+  background: linear-gradient(160deg, #a5476f, #7c3a5f);
+  border-radius: 22px;
+  box-shadow: 0 10px 0 #5f2b48, var(--shadow);
+}
+
+.col {
+  position: relative;
+  display: grid;
+  grid-template-rows: repeat(6, auto);
+  gap: 6px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+}
+.col:disabled { cursor: default; }
+.col:not(:disabled):hover { background: rgba(255, 255, 255, 0.14); }
+.col:focus-visible { outline: 3px solid var(--white); outline-offset: 2px; }
+
+.hole {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--pink-50);
+  box-shadow: inset 0 4px 7px rgba(60, 20, 40, 0.5);
+  overflow: hidden;
+}
+.hole .disc { animation: none; }
+.hole .disc.is-last { animation: drop 0.5s cubic-bezier(0.5, 0, 0.9, 0.6) both, settle 0.25s ease 0.5s; }
+@keyframes drop { from { transform: translateY(calc(-105% * var(--fall, 1))); } }
+@keyframes settle { 40% { transform: translateY(-6%); } }
+.hole { overflow: visible; }
+.disc.is-win { animation: glow 0.7s ease 4; box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.18), 0 0 0 4px #ffe07a, 0 0 16px 4px #f0b400; }
+@keyframes glow { 50% { filter: brightness(1.3); } }
+
+.ghost {
+  position: absolute;
+  top: -46px;
+  left: 50%;
+  width: 84%;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.col:not(:disabled):hover .ghost,
+.col:not(:disabled):focus-visible .ghost { opacity: 0.6; }
+
+.game__line { margin: 0; min-height: 1.6em; font-size: 1.15rem; font-weight: 600; text-align: center; color: var(--plum); }
+.game__actions { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.linkbtn { padding: 0; font: inherit; font-size: 0.85rem; color: var(--plum-soft); background: none; border: 0; text-decoration: underline; cursor: pointer; }
+.linkbtn:hover { color: var(--rose-dark); }
+
+.status { margin: 14px 0 0; text-align: center; color: var(--rose-dark); }
+.c4__hint { margin: 16px 0 0; text-align: center; font-size: 0.85rem; color: var(--plum-soft); }
+
+@media (max-width: 480px) {
+  .c4 { padding: 20px 10px 36px; }
+  .c4__title { font-size: 2.7rem; }
+  .game { padding: 16px 10px; }
+  .frame { gap: 4px; padding: 7px; }
+  .col { gap: 4px; }
+}

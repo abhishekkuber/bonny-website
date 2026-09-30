@@ -1,0 +1,241 @@
+/* ==========================================================
+   Characters (art from assets/js/characters.js) + mascot stage
+   ========================================================== */
+
+/* ---------- art ---------- */
+
+.chr {
+  --blush: 0.45;
+  --lx: 0px;
+  --ly: 0px;
+  overflow: visible;
+}
+.chr-him { --skin: #c68a5e; --hair: #2a1b17; --blush-color: #e0707a; }
+.chr-her { --skin: #fbe0cc; --hair: #3b2620; --blush-color: #ff8fa3; }
+
+.chr .line { stroke: #4a2c2a; stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+.chr .skin { fill: var(--skin); }
+.chr .hair { fill: var(--hair); }
+.chr .ink { fill: #3a2422; }
+.chr .stroke { fill: none; stroke: #3a2422; stroke-width: 3; stroke-linecap: round; }
+.chr .hair-shine { fill: none; stroke: #4a3530; stroke-width: 3; stroke-linecap: round; }
+.chr .brows { fill: none; stroke: var(--hair); stroke-width: 3.5; stroke-linecap: round; }
+.chr .shoe { fill: #1d1d20; }
+.chr .sole { fill: #fff; }
+.chr .jeans { fill: #4f6fa3; }
+.chr .arm-outline { stroke: #4a2c2a; stroke-width: 14; stroke-linecap: round; }
+.chr .arm-skin { stroke: var(--skin); stroke-width: 8; stroke-linecap: round; }
+.chr .sleeve-outline { stroke: #4a2c2a; stroke-width: 17; stroke-linecap: round; }
+.chr .sleeve { stroke: #fffaf5; stroke-width: 11; stroke-linecap: round; }
+.chr .glasses { fill: #fff; fill-opacity: 0.18; stroke: #5a3a3a; stroke-width: 3; }
+.chr .mole { fill: #5a3a30; }
+.chr .mouth-fill { fill: #b83a4b; stroke: #3a2422; stroke-width: 2.5; stroke-linejoin: round; }
+.chr .mouth-kiss { fill: #d0506a; }
+
+.chr .blush { fill: var(--blush-color); opacity: var(--blush); transition: opacity 0.5s ease; }
+.chr .flush { fill: #ff8fb1; opacity: calc(var(--blush) * 0.22); transition: opacity 0.5s ease; }
+.chr .blush-lines { fill: none; stroke: #c94a6a; stroke-width: 2; stroke-linecap: round; opacity: 0; transition: opacity 0.3s ease; }
+.chr.flustered .blush-lines { opacity: 1; }
+
+/* "look" direction: eyes, mouth etc. slide a little */
+.chr .feat { transform: translate(var(--lx), var(--ly)); transition: transform 0.35s ease; }
+
+/* expressions */
+.chr .eyes, .chr .mouth { display: none; }
+.chr[data-eyes='normal'] .eyes-normal,
+.chr[data-eyes='surprised'] .eyes-surprised,
+.chr[data-eyes='happy'] .eyes-happy,
+.chr[data-eyes='closed'] .eyes-closed,
+.chr[data-eyes='hearts'] .eyes-hearts,
+.chr[data-mouth='smile'] .mouth-smile,
+.chr[data-mouth='grin'] .mouth-grin,
+.chr[data-mouth='o'] .mouth-o,
+.chr[data-mouth='kiss'] .mouth-kiss,
+.chr[data-mouth='teeth'] .mouth-teeth { display: inline; }
+
+.chr .eye { transform-box: fill-box; transform-origin: center; animation: chr-blink 4.5s infinite; }
+.chr-her .eye { animation-delay: -1.9s; }
+@keyframes chr-blink {
+  0%, 93%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+.chr .heart-eye {
+  fill: var(--red, #e11d48);
+  stroke: #3a2422;
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: chr-heartbeat 0.8s ease-in-out infinite;
+}
+@keyframes chr-heartbeat {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.25); }
+  60% { transform: scale(0.95); }
+}
+
+/* accessories: add acc-sunglasses / acc-scarf / acc-sweat to the svg */
+.chr .acc { display: none; }
+.chr.acc-sunglasses .acc-sunglasses,
+.chr.acc-scarf .acc-scarf,
+.chr.acc-sweat .acc-sweat { display: inline; }
+.chr.acc-sunglasses .glasses { display: none; }
+.chr-him { --scarf: #b8435a; }
+.chr-her { --scarf: #f28cab; }
+.chr .shades { fill: #1d1d20; stroke: #1d1d20; stroke-width: 2; }
+.chr .shades-line { fill: none; stroke: #1d1d20; stroke-width: 3; stroke-linecap: round; }
+.chr .shine { stroke: #fff; stroke-width: 2.5; stroke-linecap: round; opacity: 0.75; }
+.chr .scarf { fill: var(--scarf); }
+.chr .scarf-stripe { stroke: #fff; stroke-width: 3; stroke-linecap: round; opacity: 0.6; }
+.chr .sweat { fill: #9fdcff; stroke: #3a2422; stroke-width: 1.5; }
+.chr .teeth { fill: #fff; stroke: #3a2422; stroke-width: 2; }
+.chr .teeth-lines { stroke: #3a2422; stroke-width: 1.2; }
+
+/* limbs pivot around the inline transform-origin (shoulder / hip) */
+.chr .limb { transform-box: view-box; transition: transform 0.3s ease; }
+
+/* ---------- stage + actors ---------- */
+
+.mascots {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0; /* scene.js moves this lane up and down the page */
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0; /* behind the page content */
+}
+/* let clicks fall through empty parts of <main> to the characters behind it */
+body.has-mascots main { pointer-events: none; }
+body.has-mascots main > * { pointer-events: auto; }
+
+.actor {
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+  pointer-events: auto;
+  cursor: pointer;
+  will-change: transform;
+}
+.actor--her { z-index: 2; }
+.actor--him { z-index: 1; }
+
+/* soft shadow that stays on the ground when they hop */
+.actor::before {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -4px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(201, 58, 110, 0.18);
+}
+
+.actor__hop, .actor__pose, .actor__gait { width: 100%; height: 100%; transform-origin: 50% 100%; }
+.actor__pose { transition: transform 0.4s ease; }
+.actor svg { display: block; width: 100%; height: 100%; }
+
+/* walking: bob + alternating steps + arm swing */
+.is-walk .actor__gait { animation: gait-walk 0.6s ease-in-out infinite; }
+.is-walk .leg-l { animation: step 0.6s ease-in-out infinite; }
+.is-walk .leg-r { animation: step 0.6s ease-in-out -0.3s infinite; }
+.is-walk .arm-l { animation: swing 0.6s ease-in-out -0.3s infinite; }
+.is-walk .arm-r { animation: swing 0.6s ease-in-out infinite; }
+
+/* running: faster, bouncier */
+.is-run .actor__gait { animation: gait-run 0.34s ease-in-out infinite; }
+.is-run .leg-l { animation: step-run 0.34s ease-in-out infinite; }
+.is-run .leg-r { animation: step-run 0.34s ease-in-out -0.17s infinite; }
+.is-run .arm-l { animation: swing-run 0.34s ease-in-out -0.17s infinite; }
+.is-run .arm-r { animation: swing-run 0.34s ease-in-out infinite; }
+
+@keyframes gait-walk {
+  0%, 50%, 100% { transform: translateY(0) rotate(0); }
+  25% { transform: translateY(-4px) rotate(-2deg); }
+  75% { transform: translateY(-4px) rotate(2deg); }
+}
+@keyframes gait-run {
+  0%, 50%, 100% { transform: translateY(0) scaleY(0.97); }
+  25%, 75% { transform: translateY(-9px) scaleY(1.02); }
+}
+@keyframes step {
+  0%, 50%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-9px) rotate(4deg); }
+}
+@keyframes step-run {
+  0%, 50%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-14px) rotate(8deg); }
+}
+@keyframes swing {
+  0%, 100% { transform: rotate(12deg); }
+  50% { transform: rotate(-12deg); }
+}
+@keyframes swing-run {
+  0%, 100% { transform: rotate(28deg); }
+  50% { transform: rotate(-28deg); }
+}
+
+/* poses (the class wins over walking animations on the same limb) */
+.actor.pose-arms-up .arm-l { animation: arms-up-l 0.34s ease-in-out infinite; }
+.actor.pose-arms-up .arm-r { animation: arms-up-r 0.34s ease-in-out infinite; }
+@keyframes arms-up-l { 0%, 100% { transform: rotate(145deg); } 50% { transform: rotate(165deg); } }
+@keyframes arms-up-r { 0%, 100% { transform: rotate(-145deg); } 50% { transform: rotate(-165deg); } }
+
+/* holding hands: him with his right arm, her with her left */
+.actor.pose-hold-r .arm-r { animation: none; transform: rotate(-30deg); }
+.actor.pose-hold-l .arm-l { animation: none; transform: rotate(97deg); }
+
+.actor.pose-throw-r .arm-r { animation: none; transform: rotate(-160deg); transition-duration: 0.15s; }
+.actor.pose-throw-l .arm-l { animation: none; transform: rotate(160deg); transition-duration: 0.15s; }
+
+.actor.pose-wave-r .arm-r { animation: wave-r 0.5s ease-in-out infinite; }
+.actor.pose-wave-l .arm-l { animation: wave-l 0.5s ease-in-out infinite; }
+@keyframes wave-r { 0%, 100% { transform: rotate(-140deg); } 50% { transform: rotate(-170deg); } }
+@keyframes wave-l { 0%, 100% { transform: rotate(140deg); } 50% { transform: rotate(170deg); } }
+
+.actor.pose-hug-r .arm-r { animation: none; transform: rotate(-75deg); }
+.actor.pose-hug-l .arm-l { animation: none; transform: rotate(75deg); }
+
+/* ---------- emotes ---------- */
+
+.emote {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  font-size: 22px;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: emote 1.8s ease-out forwards;
+}
+.emote--text {
+  padding: 4px 10px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--plum, #6b2a4a);
+  background: #fff;
+  border: 2px solid var(--pink-300, #ffa3c4);
+  border-radius: 999px;
+}
+@keyframes emote {
+  0% { transform: translate(-50%, 10px) scale(0); opacity: 0; }
+  15% { transform: translate(-50%, 0) scale(1.2); opacity: 1; }
+  25% { transform: translate(-50%, 0) scale(1); }
+  80% { transform: translate(-50%, -14px); opacity: 1; }
+  100% { transform: translate(-50%, -24px); opacity: 0; }
+}
+
+.toss-heart {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 20px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .actor__gait, .chr .limb { animation: none !important; }
+}

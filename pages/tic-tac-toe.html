@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tic tac toe ❌⭕</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❌</text></svg>">
+  <script src="../assets/js/tax.js"></script>
+  <script>KissTax.require();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/tic-tac-toe.css">
+  <script type="module" src="../assets/js/tic-tac-toe.js"></script>
+</head>
+<body>
+  <main class="ttt">
+    <header class="ttt__head">
+      <a class="back" href="../hub.html">← home</a>
+      <h1 class="ttt__title">tic tac toe</h1>
+      <p id="score" class="ttt__score"></p>
+    </header>
+
+    <section class="card game">
+      <div id="players" class="players"></div>
+      <div id="board" class="board" role="grid" aria-label="tic tac toe board"></div>
+      <p id="line" class="game__line" role="status"></p>
+      <div class="game__actions">
+        <button id="new" class="btn" type="button" hidden>new game</button>
+        <button id="abandon" class="linkbtn" type="button" hidden>abandon this game</button>
+      </div>
+    </section>
+
+    <p id="status" class="status" role="status" hidden></p>
+    <p class="ttt__hint">play whenever you like. moves wait for the other person, no need to be online together.</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,80 @@
+/* Tic tac toe */
+
+.ttt { max-width: 520px; margin: 0 auto; padding: 32px 16px 48px; }
+
+.back { display: inline-block; margin-bottom: 14px; color: var(--plum-soft); font-weight: 500; text-decoration: none; }
+.back:hover { color: var(--rose); }
+[hidden] { display: none !important; }
+.btn[disabled] { opacity: 0.6; cursor: default; transform: none; }
+
+.ttt__head { text-align: center; }
+.ttt__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1;
+  color: var(--rose);
+  text-shadow: 0 2px 0 var(--white);
+}
+.ttt__score { margin: 10px 0 0; font-weight: 600; color: var(--plum-soft); font-variant-numeric: tabular-nums; }
+
+.game { margin-top: 22px; padding: 22px 24px 24px; display: grid; gap: 16px; justify-items: center; background: rgba(255, 255, 255, 0.9); }
+
+.players { display: flex; gap: 12px; }
+.player {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 16px 5px 8px;
+  font-weight: 600;
+  background: var(--white);
+  border: 2px solid var(--pink-100);
+  border-radius: 999px;
+  transition: border-color 0.2s ease, transform 0.2s var(--bounce);
+}
+.player.is-turn { border-color: var(--rose); transform: scale(1.06); }
+.player .mark { font-size: 1.3rem; }
+
+.mark { font-family: var(--font-display); font-style: italic; font-weight: 600; line-height: 1; }
+.mark--x { color: var(--rose); }
+.mark--o { color: #6b7fd6; }
+
+/* ---------- board ---------- */
+
+.board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: min(100%, 360px); }
+.cell {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font: inherit;
+  background: linear-gradient(160deg, #fff, var(--pink-50));
+  border: 3px solid var(--pink-100);
+  border-radius: 22px;
+  box-shadow: 0 5px 0 rgba(107, 42, 74, 0.1);
+  cursor: pointer;
+  transition: transform 0.15s var(--bounce), border-color 0.15s ease, background 0.2s ease;
+}
+.cell .mark { font-size: clamp(3.4rem, 15vw, 5rem); animation: pop-in 0.3s var(--bounce); }
+.cell .mark.is-last { text-shadow: 0 0 18px currentColor; }
+.cell:not(:disabled):hover { transform: translateY(-3px); border-color: var(--rose); }
+.cell:disabled { cursor: default; }
+.cell:disabled:not(:has(.mark)) { opacity: 0.85; }
+.cell.is-win { background: linear-gradient(160deg, #fff5c8, #ffe07a); border-color: #f0b400; animation: win-pulse 0.7s ease 3; }
+@keyframes win-pulse { 50% { transform: scale(1.07); } }
+
+.game__line { margin: 0; min-height: 1.6em; font-size: 1.15rem; font-weight: 600; text-align: center; color: var(--plum); }
+.game__actions { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.linkbtn { padding: 0; font: inherit; font-size: 0.85rem; color: var(--plum-soft); background: none; border: 0; text-decoration: underline; cursor: pointer; }
+.linkbtn:hover { color: var(--rose-dark); }
+
+.status { margin: 14px 0 0; text-align: center; color: var(--rose-dark); }
+.ttt__hint { margin: 16px 0 0; text-align: center; font-size: 0.85rem; color: var(--plum-soft); }
+
+@media (max-width: 480px) {
+  .ttt { padding: 20px 12px 36px; }
+  .ttt__title { font-size: 2.7rem; }
+  .game { padding: 16px; }
+}

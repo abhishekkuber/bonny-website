@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>this or that 🤔</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤔</text></svg>">
+  <script src="../assets/js/tax.js"></script>
+  <script>KissTax.require();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/this-or-that.css">
+  <script type="module" src="../assets/js/this-or-that.js"></script>
+</head>
+<body>
+  <main class="tot">
+    <header class="tot__head">
+      <a class="back" href="../hub.html">← home</a>
+      <h1 class="tot__title">this or that</h1>
+      <p id="match" class="tot__match">pick one. see if you picked the same.</p>
+      <div class="bar" aria-hidden="true"><i id="bar-fill"></i></div>
+    </header>
+
+    <section id="card" class="card tcard" aria-live="polite"></section>
+    <p id="status" class="status" role="status" hidden></p>
+
+    <section class="add">
+      <button id="add-toggle" class="btn btn--ghost btn--small" type="button">add your own 🤔</button>
+      <form id="add-form" class="add__form" autocomplete="off" hidden>
+        <input id="add-a" maxlength="60" placeholder="this…" required>
+        <span class="add__or">or</span>
+        <input id="add-b" maxlength="60" placeholder="that…" required>
+        <button class="btn btn--small" type="submit">add</button>
+      </form>
+    </section>
+
+    <section class="hist">
+      <h2 class="hist__title">our answers</h2>
+      <div id="hist" class="hist__list"></div>
+    </section>
+  </main>
+</body>
+</html>

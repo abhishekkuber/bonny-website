@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>same sky 🌙</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>">
+  <script src="../assets/js/tax.js"></script>
+  <script>KissTax.require();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/characters.css">
+  <link rel="stylesheet" href="../assets/css/sky.css">
+  <script type="module" src="../assets/js/sky.js"></script>
+</head>
+<body>
+  <main class="sky-page">
+    <header class="head">
+      <a class="back" href="../hub.html">← home</a>
+      <h1 class="title">same sky</h1>
+      <p id="subtitle" class="sub">one moon, two cities.</p>
+    </header>
+
+    <!-- 1. live sky windows -->
+    <section class="windows">
+      <article id="win-her" class="window"></article>
+      <article id="win-him" class="window"></article>
+    </section>
+
+    <div class="row">
+      <!-- 2. the moon -->
+      <section class="card moon-card">
+        <h2>the same moon</h2>
+        <div class="moon-card__body">
+          <div id="moon-big" class="moon-big"></div>
+          <div>
+            <div id="moon-phase" class="moon-phase">…</div>
+            <div id="moon-lit" class="muted"></div>
+            <ul id="moon-where" class="moon-where"></ul>
+          </div>
+        </div>
+        <div id="moon-banner" class="banner"></div>
+        <p id="moon-distance" class="muted small"></p>
+      </section>
+
+      <!-- 3. sky date -->
+      <section class="card date-card">
+        <h2>next sky date</h2>
+        <p class="muted small">the next time the moon is up for both of you, at an hour you're both awake. look up together.</p>
+        <div id="date-main" class="date-main"></div>
+        <ul id="date-more" class="date-more"></ul>
+      </section>
+    </div>
+
+    <!-- 4. tonight's planets -->
+    <section class="card">
+      <h2>tonight's planets</h2>
+      <div class="planets">
+        <div id="planets-her"></div>
+        <div id="planets-him"></div>
+      </div>
+    </section>
+
+    <!-- 5. upcoming sky events -->
+    <section class="card">
+      <h2>coming up in the sky</h2>
+      <ol id="events" class="events"></ol>
+    </section>
+
+    <!-- 6. NASA picture of the day -->
+    <section id="apod" class="card apod">
+      <h2>nasa's picture of the day</h2>
+      <div id="apod-body" class="apod__body"><p class="muted">loading…</p></div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,156 @@
+/* Kiss-tax landing page */
+
+.gate {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.gate__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 4.4rem);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1;
+  color: var(--rose);
+  text-shadow: 0 2px 0 var(--white);
+  animation: wiggle 3.2s ease-in-out infinite;
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.gate__sub {
+  margin: 10px 0 0;
+  font-size: 1.25rem;
+  color: var(--plum-soft);
+}
+
+/* ---------- face + speech bubble ---------- */
+
+.stage {
+  position: relative;
+  margin-top: 90px;
+}
+
+.bubble {
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  z-index: 2;
+  padding: 10px 22px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--white);
+  border: 3px solid var(--pink-300);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  transform: translateX(-50%);
+}
+.bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--white);
+  border-right: 3px solid var(--pink-300);
+  border-bottom: 3px solid var(--pink-300);
+  transform: translateX(-50%) rotate(45deg);
+}
+.bubble.pop { animation: bubble-pop 0.45s var(--bounce); }
+@keyframes bubble-pop {
+  0% { transform: translateX(-50%) scale(0.6); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
+.face-wrap {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  animation: bob 3s ease-in-out infinite;
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.face {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 14px 22px rgba(226, 80, 138, 0.25));
+}
+.face.squish { animation: squish 0.45s var(--bounce); }
+@keyframes squish {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.08, 0.9); }
+  60% { transform: scale(0.95, 1.06); }
+  100% { transform: scale(1); }
+}
+
+.kissable {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='42' height='28' viewBox='0 0 60 40'><path fill='%23e11d48' d='M2 19C10 7 20 3 30 11C40 3 50 7 58 19C48 21 40 19 30 21C20 19 12 21 2 19Z'/><path fill='%23f43f5e' d='M2 21C12 23 20 22 30 23C40 22 48 23 58 21C50 36 40 38 30 38C20 38 10 36 2 21Z'/></svg>") 21 14, pointer;
+}
+
+/* lipstick marks left on the face */
+.kiss-marks { position: absolute; inset: 0; pointer-events: none; }
+.kiss-mark {
+  position: absolute;
+  width: 46px;
+  opacity: 0.9;
+  transform: translate(-50%, -50%) rotate(var(--rot));
+  animation: stamp 0.35s var(--bounce);
+}
+@keyframes stamp {
+  0% { transform: translate(-50%, -50%) rotate(var(--rot)) scale(2.2); opacity: 0; }
+  100% { transform: translate(-50%, -50%) rotate(var(--rot)) scale(1); opacity: 0.9; }
+}
+
+/* ---------- tally ---------- */
+
+.tally {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 26px;
+}
+.tally__lip {
+  width: 46px;
+  opacity: 0.25;
+  filter: grayscale(1);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+.tally__lip.on {
+  opacity: 1;
+  filter: none;
+  animation: pop-in 0.4s var(--bounce);
+}
+
+.hint {
+  margin: 14px 0 0;
+  color: var(--plum-soft);
+}
+
+/* ---------- skip (runs away) + enter ---------- */
+
+.skip {
+  position: fixed;
+  z-index: 50;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  transition: left 0.28s var(--bounce), top 0.28s var(--bounce), opacity 0.3s ease, transform 0.15s var(--bounce);
+}
+
+.enter { display: none; margin-top: 22px; }
+
+.paid .enter { display: inline-flex; animation: pop-in 0.5s var(--bounce); }
+.paid .hint { display: none; }
+.paid .skip { opacity: 0; pointer-events: none; }

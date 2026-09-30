@@ -1,0 +1,346 @@
+/* Our weather: page-only sky + the two of them dressed for it.
+   weather.js sets data-mood on <body> and #scene:
+   loading | sunny | hot | cloudy | fog | rain | storm | cold (< 10°C) | snow | night */
+
+.wx-page { background: none; }
+
+/* ================================================================ sky */
+
+.sky { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+
+.sky__grad { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s ease; }
+.g-loading { background: linear-gradient(160deg, var(--pink-50), var(--pink-100)); }
+.g-sunny { background: linear-gradient(180deg, #ffe58f 0%, #fff3c4 45%, #ffe3ec 100%); }
+.g-hot { background: linear-gradient(180deg, #ffc46b 0%, #ffe3a3 45%, #ffd5cf 100%); }
+.g-cloudy { background: linear-gradient(180deg, #c9cfd8 0%, #e3e6eb 50%, #f3eef1 100%); }
+.g-rain { background: linear-gradient(180deg, #8e98a7 0%, #bcc3cd 50%, #dcdfe5 100%); }
+.g-storm { background: linear-gradient(180deg, #4f5766 0%, #7d8595 50%, #aeb4bf 100%); }
+.g-cold { background: linear-gradient(180deg, #c7e1fb 0%, #e7f2ff 50%, #f6f0ff 100%); }
+.g-night { background: linear-gradient(180deg, #1c2046 0%, #36316a 55%, #62456f 100%); }
+
+body[data-mood='loading'] .g-loading,
+body[data-mood='sunny'] .g-sunny,
+body[data-mood='hot'] .g-hot,
+body[data-mood='cloudy'] .g-cloudy,
+body[data-mood='fog'] .g-cloudy,
+body[data-mood='rain'] .g-rain,
+body[data-mood='storm'] .g-storm,
+body[data-mood='cold'] .g-cold,
+body[data-mood='snow'] .g-cold,
+body[data-mood='night'] .g-night { opacity: 1; }
+
+/* everything below fades in only for the moods that use it */
+.sun, .moon, .fx, .fog, .flash { opacity: 0; transition: opacity 1.2s ease; }
+
+.sun {
+  position: absolute;
+  top: 7%;
+  right: 9%;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff6c2 0%, #ffd84d 55%, #ffc21a 100%);
+  box-shadow: 0 0 80px 30px rgba(255, 210, 60, 0.55);
+  animation: sun-pulse 5s ease-in-out infinite;
+}
+.sun::before {
+  content: '';
+  position: absolute;
+  inset: -60px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255, 214, 80, 0.35) 0 8deg, transparent 8deg 24deg);
+  mask: radial-gradient(circle, transparent 42%, #000 44%, transparent 72%);
+  animation: spin 40s linear infinite;
+}
+@keyframes sun-pulse { 50% { transform: scale(1.05); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+body[data-mood='sunny'] .sun,
+body[data-mood='hot'] .sun { opacity: 1; }
+body[data-mood='hot'] .sun { filter: hue-rotate(-12deg) saturate(1.3); }
+
+.moon {
+  position: absolute;
+  top: 9%;
+  right: 12%;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  box-shadow: -22px 12px 0 0 #fff4d6;
+  filter: drop-shadow(0 0 24px rgba(255, 244, 214, 0.6));
+  transform: rotate(-20deg);
+}
+body[data-mood='night'] .moon { opacity: 1; }
+
+.fx { position: absolute; inset: 0; }
+
+.stars span {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle var(--dur) ease-in-out var(--delay) infinite;
+}
+@keyframes twinkle { 50% { opacity: 0.2; transform: scale(0.6); } }
+body[data-mood='night'] .stars { opacity: 1; }
+
+.clouds span {
+  position: absolute;
+  left: 0;
+  width: var(--w);
+  height: calc(var(--w) * 0.34);
+  border-radius: 999px;
+  background: var(--cloud, #fff);
+  opacity: var(--o);
+  animation: drift-x var(--dur) linear var(--delay) infinite;
+}
+.clouds span::before,
+.clouds span::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+}
+.clouds span::before { width: 50%; height: 140%; left: 14%; bottom: 20%; }
+.clouds span::after { width: 38%; height: 110%; left: 48%; bottom: 25%; }
+@keyframes drift-x {
+  from { transform: translateX(-30vw); }
+  to { transform: translateX(130vw); }
+}
+body[data-mood='cloudy'] .clouds,
+body[data-mood='fog'] .clouds,
+body[data-mood='rain'] .clouds,
+body[data-mood='storm'] .clouds { opacity: 1; }
+body[data-mood='sunny'] .clouds { opacity: 0.6; }
+body[data-mood='rain'] .clouds span { --cloud: #eef0f3; }
+body[data-mood='storm'] .clouds span { --cloud: #9aa1ad; }
+
+.rain span {
+  position: absolute;
+  top: -12%;
+  width: 2px;
+  height: var(--len);
+  border-radius: 2px;
+  background: linear-gradient(transparent, rgba(255, 255, 255, 0.85));
+  animation: fall var(--dur) linear var(--delay) infinite;
+}
+@keyframes fall { to { transform: translate(-40px, 115vh); } }
+body[data-mood='rain'] .rain,
+body[data-mood='storm'] .rain { opacity: 1; }
+
+.snow span {
+  position: absolute;
+  top: -5%;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  animation: snow var(--dur) linear var(--delay) infinite;
+}
+@keyframes snow {
+  25% { transform: translate(18px, 28vh); }
+  50% { transform: translate(-12px, 56vh); }
+  75% { transform: translate(16px, 84vh); }
+  100% { transform: translate(0, 112vh); }
+}
+body[data-mood='snow'] .snow { opacity: 1; }
+body[data-mood='cold'] .snow { opacity: 0.6; }
+
+.fog {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.1) 60%);
+}
+body[data-mood='fog'] .fog { opacity: 1; }
+
+.flash { position: absolute; inset: 0; background: #fff; }
+body[data-mood='storm'] .flash { opacity: 1; animation: flash 7s infinite; }
+@keyframes flash {
+  0%, 60%, 64%, 100% { opacity: 0; }
+  61% { opacity: 0.8; }
+  62% { opacity: 0.1; }
+  63% { opacity: 0.6; }
+}
+
+/* ================================================================ layout */
+
+.wx {
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.back { display: inline-block; margin-bottom: 20px; color: var(--plum-soft); font-weight: 500; text-decoration: none; }
+.back:hover { color: var(--rose); }
+
+.wx__title {
+  margin: 0 0 24px;
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1;
+  color: var(--rose);
+  text-shadow: 0 2px 0 var(--white);
+  transition: color 1s ease;
+}
+
+/* night is dark: flip the loose text to light */
+body[data-mood='night'] .wx__title { color: #ffd6e6; text-shadow: none; }
+body[data-mood='night'] .back,
+body[data-mood='night'] .wx__other { color: #e9dcf5; }
+
+/* ---------- home toggle ---------- */
+
+.toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 6px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid var(--white);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+}
+.toggle button {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 8px;
+  font: inherit;
+  color: var(--plum-soft);
+  background: none;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.toggle button b { font-weight: 600; }
+.toggle button small { font-size: 0.8rem; opacity: 0.8; }
+.toggle button[aria-selected='true'] { color: var(--white); }
+.toggle__pill {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
+  width: calc(50% - 6px);
+  background: var(--rose);
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(242, 80, 138, 0.35);
+  transition: transform 0.45s var(--bounce);
+}
+.toggle[data-home='him'] .toggle__pill { transform: translateX(100%); }
+
+/* ---------- weather card ---------- */
+
+.wx__card { padding: 24px 26px; }
+.wx__top { display: flex; justify-content: space-between; align-items: flex-start; }
+.wx__city { font-family: var(--font-display); font-size: 2.2rem; font-weight: 600; font-style: italic; line-height: 1; }
+.wx__time { margin-top: 6px; font-size: 0.9rem; color: var(--plum-soft); }
+.wx__temp { font-size: 3.4rem; font-weight: 600; line-height: 1; letter-spacing: -0.03em; color: var(--rose); }
+.wx__condition { margin-top: 14px; font-weight: 600; }
+.wx__line { margin-top: 4px; color: var(--plum-soft); min-height: 1.4em; }
+
+.wx__details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--pink-100);
+}
+.wx__details div { display: flex; flex-direction: column; }
+.wx__details dt { font-size: 0.78rem; color: var(--plum-soft); }
+.wx__details dd { margin: 2px 0 0; font-weight: 600; }
+
+.wx__other { margin: 16px 4px 0; font-size: 0.92rem; color: var(--plum-soft); }
+
+.wx__card.swap { animation: card-swap 0.5s var(--bounce); }
+@keyframes card-swap {
+  0% { transform: scale(0.96); opacity: 0.4; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ================================================================ scene */
+
+.wx__stage { display: grid; place-items: center; }
+.scene { width: min(100%, 560px); height: auto; overflow: visible; }
+
+.scene .who { transform-box: fill-box; transform-origin: 50% 100%; animation: wx-bob 3s ease-in-out infinite; }
+.scene .who-her { animation-delay: -1.5s; }
+@keyframes wx-bob { 50% { transform: translateY(-5px); } }
+
+/* holding hands by default */
+.scene .chr-him .arm-r { transform: rotate(-30deg); }
+.scene .chr-her .arm-l { transform: rotate(97deg); }
+
+/* sunny / hot: sway together */
+.scene[data-mood='sunny'] .who,
+.scene[data-mood='hot'] .who { animation: wx-sway 2.4s ease-in-out infinite; }
+@keyframes wx-sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg) translateY(-4px); }
+}
+
+/* rain / storm: he holds the umbrella over both of them */
+.umbrella { opacity: 0; transform: translateY(-40px); transition: opacity 0.6s ease, transform 0.8s var(--bounce); }
+.umbrella__canopy { fill: var(--rose); stroke: #4a2c2a; stroke-width: 4; stroke-linejoin: round; }
+.umbrella__ribs { fill: none; stroke: rgba(74, 44, 42, 0.45); stroke-width: 3; }
+.umbrella__shaft { fill: none; stroke: #4a2c2a; stroke-width: 5; stroke-linecap: round; }
+.umbrella__tip { fill: #4a2c2a; }
+.scene[data-mood='rain'] .umbrella,
+.scene[data-mood='storm'] .umbrella { opacity: 1; transform: none; }
+.scene[data-mood='rain'] .chr-him .arm-r,
+.scene[data-mood='storm'] .chr-him .arm-r { transform: rotate(-160deg); }
+.scene[data-mood='rain'] .chr-her .arm-l,
+.scene[data-mood='storm'] .chr-her .arm-l { transform: rotate(40deg); }
+
+/* cold / snow: shivering, chattering, frosty breath */
+.scene[data-mood='cold'] .who,
+.scene[data-mood='snow'] .who { animation: wx-shiver 0.16s linear infinite; }
+.scene[data-mood='cold'] .who-her,
+.scene[data-mood='snow'] .who-her { animation-delay: -0.08s; }
+@keyframes wx-shiver {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1.5px); }
+  75% { transform: translateX(1.5px); }
+}
+.scene .mouth-teeth { transform-box: fill-box; transform-origin: center; animation: chatter 0.2s steps(2) infinite; }
+@keyframes chatter { 50% { transform: scaleY(0.55); } }
+
+.breath { opacity: 0; fill: #fff; }
+.scene[data-mood='cold'] .breath,
+.scene[data-mood='snow'] .breath { opacity: 1; }
+.breath circle { transform-box: fill-box; transform-origin: center; animation: puff 2.4s ease-out infinite; }
+.breath circle:nth-child(2n) { animation-delay: 0.3s; }
+.breath circle:nth-child(n + 3) { animation-delay: 1.2s; }
+@keyframes puff {
+  0% { transform: translate(0, 0) scale(0.3); opacity: 0.9; }
+  100% { transform: translate(22px, -18px) scale(1.6); opacity: 0; }
+}
+
+/* night: dozing off */
+.zzz { opacity: 0; font: italic 600 22px var(--font-display); fill: #fff; }
+.scene[data-mood='night'] .zzz { opacity: 1; }
+.zzz text { animation: zzz 3s ease-in-out infinite; }
+.zzz text:nth-child(2n) { animation-delay: 0.6s; }
+.zzz text:nth-child(n + 3) { animation-delay: 1.5s; }
+@keyframes zzz {
+  0% { opacity: 0; transform: translateY(8px); }
+  30%, 70% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-16px); }
+}
+
+@media (max-width: 900px) {
+  .wx { grid-template-columns: 1fr; }
+}
