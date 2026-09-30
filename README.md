@@ -41,6 +41,7 @@ Data pages call `requireMember()` from `assets/js/db.js`, which bounces stranger
 | kiss catcher | `pages/kiss-catcher.html` | `scores` table (`game = 'kiss-catcher'`), your best vs theirs + top 5 |
 | connect 4 | `pages/connect-4.html` | `matches` table via `assets/js/match.js`, turn-based, async |
 | tic tac toe | `pages/tic-tac-toe.html` | `matches` table, turn-based, async |
+| make a wish 🎂 | `pages/birthday.html` | none (pure animation). Hold space / the button to inhale, candles go out when the bar fills. Uses `Actor` from `scene.js`: kubie peeks in from the left edge when she first inhales, then runs in and kisses her cheek after the candles go out. `?candles=N` (1-12) sets the candle count; default 7. |
 
 Turn-based games share `assets/js/match.js` (create a match, `submitMove` that only lands if it's still your turn, abandon, scoreboard tally, alternate who starts, realtime watcher). Tic tac toe and Connect 4 both work like this: the first mover (X / rose) always goes first and the starter alternates each game; a move is refused if the other person moved first, the board just refreshes; the hub tile shows a "your turn" badge when a game is waiting on you. Moves are validated in the browser only (fine for two people).
 
@@ -72,6 +73,7 @@ assets/js/
   kiss-catcher.js     the game loop, spawning, scoring
   match.js            shared helpers for turn-based games on the matches table
   tic-tac-toe.js      tic tac toe
+  birthday.js         the candle-blowing cake
   connect-4.js        connect 4 (flat 42-cell board, index = row*7+col, row 0 on top)
   tax.js              kiss-tax flag + KissTax.require()
   emotion.js          feelings, colours, splitSentences(), toPercents()
@@ -113,6 +115,7 @@ For data, `import { db, requireMember } from './db.js'` and `const me = await re
 
 ## Ideas not built yet
 
+- Birthday cake: make the tile appear only around her birthday (needs the date in `config.js`), use her real age for the candle count, optionally blow by real microphone input.
 - A real-time two-cat co-op puzzle game (inspired by The Missing Tail): both online, synced through Supabase Realtime broadcast. Big; prototype one room first.
 - "Days until we meet" countdown (the `kv` table is there for shared settings).
 - Photos via the private `photos` storage bucket (already created).
